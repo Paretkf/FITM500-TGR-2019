@@ -1,5 +1,5 @@
 # Basic_Rest_API
->  RESTful API is a method of allowing communication between a web-based client and server 
+>  RESTful API is a method of allowing communication between a web-based client and server. 
 ## 1. Tools
  - git
  - node js
