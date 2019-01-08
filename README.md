@@ -14,3 +14,17 @@
 ### 4. Server
 > sorce code for server with node.js
 - [Day1_Basic_Rest_API](./Server/Day1_Basic_Rest_API)
+
+## Member
+- :heart_eyes: Rachata Tongphakdee (fluk).
+- Silawat Leelas (flame).
+- Kawin Lueangraklikhit (kewin).
+- Kunton Jongjongprasert (tunn).
+- Peerapong Roilarp (dome).
+
+## Branch
+- fluk.
+- flame.
+- kewin.
+- tunn.
+- dome.
