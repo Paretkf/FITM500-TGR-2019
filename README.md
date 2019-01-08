@@ -9,8 +9,8 @@
 > source code for linebot message api and ML with node.js and tensorflow.js.
 - [x] Day1_LineBot_Beacon
 ### 3. Project_Management
-- [ ] Project Management pdf file
 > file pdf for project management
+- [ ] Project Management pdf file
 ### 4. Server
 > sorce code for server with node.js
 - [x] Day1_Basic_Rest_API
