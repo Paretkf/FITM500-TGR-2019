@@ -1,0 +1,98 @@
+{
+    "user1": {
+        "name": "mahesh",
+        "password": "password1",
+        "profession": "teacher",
+        "id": 1
+    },
+    "user3": {
+        "name": "ramesh",
+        "password": "password3",
+        "profession": "clerk",
+        "id": 3
+    },
+    "user4": {
+        "name": "John",
+        "password": "password4",
+        "profession": "admin",
+        "id": 4
+    },
+    "user5": {
+        "name": "hlbk",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 5
+    },
+    "user7": {
+        "name": "saasfsdfzxczxczxczxcsdf",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 7
+    },
+    "user8": {
+        "name": "hlbk",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 8
+    },
+    "user9": {
+        "name": "hlbk",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 9
+    },
+    "user10": {
+        "name": "hlbk",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 10
+    },
+    "user11": {
+        "name": "hlbk",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 11
+    },
+    "user12": {
+        "name": "hlbk",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 12
+    },
+    "user13": {
+        "name": "TEST1",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 13
+    },
+    "user14": {
+        "name": "TEST2",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 14
+    },
+    "user15": {
+        "name": "TEST1.2",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 15
+    },
+    "user16": {
+        "name": "TEST2.1",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 16
+    },
+    "user17": {
+        "name": "TEST3",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 17
+    },
+    "user18": {
+        "name": "TEST4",
+        "password": "password4",
+        "profession": "teacher",
+        "id": 18
+    }
+}
