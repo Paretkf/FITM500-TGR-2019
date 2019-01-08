@@ -7,10 +7,10 @@
 > source code for stm32 LoRa.
 ### 2. Line_ML
 > source code for linebot message api and ML with node.js and tensorflow.js.
-- [x] Day1_LineBot_Beacon
+- [Day1_LineBot_Beacon](./Line_ML/Day1_LineBot_Beacon)
 ### 3. Project_Management
 > file pdf for project management
-- [ ] Project Management pdf file
+- Project Management pdf file
 ### 4. Server
 > sorce code for server with node.js
-- [x] Day1_Basic_Rest_API
+- [Day1_Basic_Rest_API](./Server/Day1_Basic_Rest_API)
