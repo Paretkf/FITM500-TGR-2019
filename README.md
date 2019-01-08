@@ -17,10 +17,10 @@
 
 ## Member
 - :heart_eyes: Rachata Tongphakdee (fluk).
-- Silawat Leelas (flame).
-- Kawin Lueangraklikhit (kewin).
-- Kunton Jongjongprasert (tunn).
-- Peerapong Roilarp (dome).
+- :sunglasses:Sillawat Leelas (flame).
+- :disappointed_relieved: Kawin Lueangraklikhit (kewin).
+- :kissing_smiling_eyes: Kunton Jongjongprasert (tunn).
+- :stuck_out_tongue_closed_eyes: Peerapong Roilarp (dome).
 
 ## Branch
 - fluk.
