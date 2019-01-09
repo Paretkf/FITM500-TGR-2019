@@ -8,3 +8,6 @@ Line_ML/Day1_LineBot_Beacon/package-lock.json
 # Server
 Server/Day1_Basic_Rest_API/node_modules
 Server/Day1_Basic_Rest_API/package-lock.json
+
+Server/Day2_MongoDB/node_modules
+Server/Day2_MongoDB/package-lock.json
