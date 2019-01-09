@@ -9,6 +9,7 @@
 ### 2. Line_ML
 > source code for linebot message api and ML with node.js and tensorflow.js.
 - [Day1_LineBot_Beacon](./Line_ML/Day1_LineBot_Beacon)
+- [Day2_RNN](./Line_ML/Day2_RNN)
 ### 3. Project_Management
 > file pdf for project management
 - [Project Management pdf file](./Project_Management)
