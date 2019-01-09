@@ -2,7 +2,7 @@ var read = require('./read.js');
 
 async function main () {
   let data = await read();
-  console.log([data.x]);
+  console.log(data);
 }
 
 main();

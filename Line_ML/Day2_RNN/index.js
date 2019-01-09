@@ -50,7 +50,7 @@ const model = tf.sequential();
 
 model.add(tf.layers.lstm({
     // จำนวน node ของการ train
-    units: 500,
+    units: 300,
     // มิติของข้อมูลวันรอบตัวเองกี่ครั้ง วน 3 [10,20,30] = [3,1] ; [[10,20,30], [10,20,30]] = [3,2]
     inputShape: [3, 1],
     returnSequences: false
@@ -85,7 +85,7 @@ async function main(){
       trainYS,
       {
         // จำนวนก้าว
-        batchSize: 50,
+        batchSize: 100,
         // จำนวนรอบที่ train
         epochs: 100,
         // ดึงมา train แบบสลับ = true
@@ -104,7 +104,7 @@ async function main(){
     };
       
     load();
-    let data = [[11, 23, 2018]];
+    let data = [[32.99, 32.89, 32.98]];
     let dataResult = 33.08;
     let testDataTS = tf.tensor2d(data);
     testDataTS = tf.reshape(testDataTS, [-1, 3, 1]);
