@@ -10,7 +10,7 @@
 - [Day1_LineBot_Beacon](./Line_ML/Day1_LineBot_Beacon)
 ### 3. Project_Management
 > file pdf for project management
-- Project Management pdf file
+- [Project Management pdf file](./Project_Management)
 ### 4. Server
 > sorce code for server with node.js
 - [Day1_Basic_Rest_API](./Server/Day1_Basic_Rest_API)
