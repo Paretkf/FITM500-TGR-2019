@@ -1,2 +1,10 @@
-/node_modules
-/package-lock.json 
+# Line_ML
+Line_ML/Day2_RNN/node_modules
+Line_ML/Day2_RNN/package-lock.json
+
+Line_ML/Day1_LineBot_Beacon/node_modules
+Line_ML/Day1_LineBot_Beacon/package-lock.json
+
+# Server
+Server/Day1_Basic_Rest_API/node_modules
+Server/Day1_Basic_Rest_API/package-lock.json
