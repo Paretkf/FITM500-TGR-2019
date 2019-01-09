@@ -56,12 +56,15 @@ model.add(tf.layers.lstm({
     returnSequences: false
 }));
 
+model.add(tf.layers.dropout ({
+  rate: 0.2
+}));
 model.add(tf.layers.dense({
-   // จำนวนผลลัพธ์
-    units: 1,
-    kernelInitializer: 'VarianceScaling',
-    // Function กรองข้อมูล
-    activation: 'relu'
+  // จำนวนผลลัพธ์
+   units: 1,
+   kernelInitializer: 'VarianceScaling',
+   // Function กรองข้อมูล
+   activation: 'relu'
 }));
 // นั่นคือขนาดของก้าวที่เราจะทำการปรับในแต่ละครั้งก็สำคัญมีหลายวิธีที่ถูกเสนอมาสำหรับปรับแบบอัตโนมัติ
 const LEARNING_RATE = 0.0001;
@@ -82,9 +85,9 @@ async function main(){
       trainYS,
       {
         // จำนวนก้าว
-        batchSize: 1,
+        batchSize: 50,
         // จำนวนรอบที่ train
-        epochs: 50,
+        epochs: 100,
         // ดึงมา train แบบสลับ = true
         shuffle: true,
         // spite 20 ดึงมา train 80 (0.2)
@@ -102,12 +105,16 @@ async function main(){
       
     load();
     let data = [[11, 23, 2018]];
+    let dataResult = 33.08;
     let testDataTS = tf.tensor2d(data);
     testDataTS = tf.reshape(testDataTS, [-1, 3, 1]);
     const r = model.predict(testDataTS);
     let result = r.dataSync()[0];
     console.log(`Scale Down result is : ${result}`);
     console.log('result is : ', result * MAX);
+    console.log('Data Result is : ', dataResult);
+    console.log('Value_loss : ', dataResult - (result * MAX));
+    
 }
 
 main();
