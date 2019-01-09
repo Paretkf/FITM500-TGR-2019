@@ -1,7 +1,7 @@
 
 const tf = require('@tensorflow/tfjs');
 require('@tensorflow/tfjs-node');
-
+const read = require('./read.js');
 var xs = [];
 var ys = [];
 var trainXS;
@@ -14,31 +14,30 @@ function range(start, end) {
     }
     return ans;
 }
-
+let MAX = -999;
 async function prepareData() {
-    /*
+    let csvData = await read();
     MAX = -999;
-    const len = data.length
-    for (i=0; i<len; i++) {
-        if (MAX <= data[i]) {
-            MAX = data[i];
+    const len = csvData.y.length
+    for (i=0; i < len; i++) {
+        if (MAX <= csvData.y[i]) {
+            MAX = csvData.y[i];
         }
     }
     
-    let dataset = data.map((number) => {
+    csvData.y = csvData.y.map((number) => {
         return number/MAX;
     })
 
-    let arr = range(TIME_STEP, dataset.length - NUM_OUT + 1);
+    // let arr = range(TIME_STEP, dataset.length - NUM_OUT + 1);
 
-    arr.forEach(function(i) {
+    // arr.forEach(function(i) {
         
-    });
-    */
+    // });
   //  ข้อมูลที่ใช้ในการ train
-   xs = [[10,20,30], [20,30,40], [30,40,50]];
+   xs = await csvData.x;
   // ข้อมูลที่ควรจะเป็น 
-   ys = [40,50,60];
+   ys = await csvData.y;
    trainXS = await tf.tensor2d(xs);
    trainXS = await tf.reshape(trainXS, [-1, 3, 1]);
 
@@ -51,7 +50,7 @@ const model = tf.sequential();
 
 model.add(tf.layers.lstm({
     // จำนวน node ของการ train
-    units: 50,
+    units: 500,
     // มิติของข้อมูลวันรอบตัวเองกี่ครั้ง วน 3 [10,20,30] = [3,1] ; [[10,20,30], [10,20,30]] = [3,2]
     inputShape: [3, 1],
     returnSequences: false
@@ -65,9 +64,9 @@ model.add(tf.layers.dense({
     activation: 'relu'
 }));
 // นั่นคือขนาดของก้าวที่เราจะทำการปรับในแต่ละครั้งก็สำคัญมีหลายวิธีที่ถูกเสนอมาสำหรับปรับแบบอัตโนมัติ
-const LEARNING_RATE = 0.001;
+const LEARNING_RATE = 0.0001;
 // diff เพื่อหาความชัน
-const optimizer = tf.train.adam(LEARNING_RATE);
+const optimizer = tf.train.sgd(LEARNING_RATE);
 
 model.compile({
     optimizer: optimizer,
@@ -82,19 +81,18 @@ async function main(){
       trainXS,
       trainYS,
       {
-        // 
+        // จำนวนก้าว
         batchSize: 1,
         // จำนวนรอบที่ train
-        epochs: 1000,
+        epochs: 50,
         // ดึงมา train แบบสลับ = true
         shuffle: true,
         // spite 20 ดึงมา train 80 (0.2)
-        validationSplit: 1.0
+        validationSplit: 0.2
       });
   }
     await prepareData();
-    
-    
+
 	await trainModel();
     const saveResult = await model.save('file://model');
     console.error(saveResult);
@@ -103,12 +101,13 @@ async function main(){
     };
       
     load();
-    let data = [[10, 20, 30]];
+    let data = [[11, 23, 2018]];
     let testDataTS = tf.tensor2d(data);
     testDataTS = tf.reshape(testDataTS, [-1, 3, 1]);
     const r = model.predict(testDataTS);
     let result = r.dataSync()[0];
-    console.log('result is : ', result);
+    console.log(`Scale Down result is : ${result}`);
+    console.log('result is : ', result * MAX);
 }
 
-// main();
+main();

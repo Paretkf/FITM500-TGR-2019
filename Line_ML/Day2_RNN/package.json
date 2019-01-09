@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@tensorflow/tfjs": "^0.14.1",
-    "@tensorflow/tfjs-node": "^0.2.1"
+    "@tensorflow/tfjs-node": "^0.2.1",
+    "fast-csv": "^2.4.1"
   }
 }
