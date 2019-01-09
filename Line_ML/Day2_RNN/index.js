@@ -6,6 +6,7 @@ var xs = [];
 var ys = [];
 var trainXS;
 var trainYS;
+let MAX = -999;
 
 function range(start, end) {
     var ans = [];
@@ -14,7 +15,6 @@ function range(start, end) {
     }
     return ans;
 }
-let MAX = -999;
 async function prepareData() {
     let csvData = await read();
     MAX = -999;
@@ -46,64 +46,67 @@ async function prepareData() {
     
 }
 
-const model = tf.sequential();
 
-model.add(tf.layers.lstm({
-    // จำนวน node ของการ train
-    units: 300,
-    // มิติของข้อมูลวันรอบตัวเองกี่ครั้ง วน 3 [10,20,30] = [3,1] ; [[10,20,30], [10,20,30]] = [3,2]
-    inputShape: [3, 1],
-    returnSequences: false
-}));
 
-model.add(tf.layers.dropout ({
-  rate: 0.2
-}));
-model.add(tf.layers.dense({
-  // จำนวนผลลัพธ์
-   units: 1,
-   kernelInitializer: 'VarianceScaling',
-   // Function กรองข้อมูล
-   activation: 'relu'
-}));
-// นั่นคือขนาดของก้าวที่เราจะทำการปรับในแต่ละครั้งก็สำคัญมีหลายวิธีที่ถูกเสนอมาสำหรับปรับแบบอัตโนมัติ
-const LEARNING_RATE = 0.0001;
-// diff เพื่อหาความชัน
-const optimizer = tf.train.sgd(LEARNING_RATE);
+async function trainModel(){
 
-model.compile({
-    optimizer: optimizer,
-    // หาค่า mean ที่ใส่เข้าไป ปรับ weigth
-    loss: 'meanSquaredError',
-    metrics: ['accuracy']
-});
+    const model = tf.sequential();
+    // เพิ่ม layer lstm
+    model.add(tf.layers.lstm({
+        // จำนวน node ของการ train
+        units: 100,
+        // มิติของข้อมูลวันรอบตัวเองกี่ครั้ง วน 3 [10,20,30] = [3,1] ; [[10,20,30], [10,20,30]] = [3,2]
+        inputShape: [3, 1],
+        returnSequences: false
+    }));
+    // เพิ่ม layer dropout
+    model.add(tf.layers.dropout ({
+        rate: 0.2
+    }));
+    model.add(tf.layers.dense({
+        // จำนวนผลลัพธ์
+        units: 1,
+        kernelInitializer: 'VarianceScaling',
+        // Function กรองข้อมูล
+        activation: 'relu'
+    }));
+    // นั่นคือขนาดของก้าวที่เราจะทำการปรับในแต่ละครั้งก็สำคัญมีหลายวิธีที่ถูกเสนอมาสำหรับปรับแบบอัตโนมัติ
+    const LEARNING_RATE = 0.0001;
+    // diff เพื่อหาความชัน
+    const optimizer = tf.train.sgd(LEARNING_RATE);
 
+    model.compile({
+        optimizer: optimizer,
+        // หาค่า mean ที่ใส่เข้าไป ปรับ weigth
+        loss: 'meanSquaredError',
+        metrics: ['accuracy']
+    });
+    
+  await prepareData();
+  const history = await model.fit(
+    trainXS,
+    trainYS,
+    {
+      // จำนวนก้าว 100
+      batchSize: 100,
+      // จำนวนรอบที่ train 1000
+      epochs: 30,
+      // ดึงมา train แบบสลับ = true
+      shuffle: true,
+      // spite 20 ดึงมา train 80 (0.2)
+      validationSplit: 0.2
+  });
+  await model.save('file://model');
+}
+
+const load = () => {
+  return new Promise((resolve, reject) => {
+    resolve(tf.loadModel('file://model/model.json'))
+  })
+};
 async function main(){
-	async function trainModel(){
-    const history = await model.fit(
-      trainXS,
-      trainYS,
-      {
-        // จำนวนก้าว
-        batchSize: 100,
-        // จำนวนรอบที่ train
-        epochs: 100,
-        // ดึงมา train แบบสลับ = true
-        shuffle: true,
-        // spite 20 ดึงมา train 80 (0.2)
-        validationSplit: 0.2
-      });
-  }
-    await prepareData();
-
-	await trainModel();
-    const saveResult = await model.save('file://model');
-    console.error(saveResult);
-    const load = async () => {
-      const model = await tf.loadModel('file://model/model.json');
-    };
-      
-    load();
+    await trainModel();
+    let model = await load();
     let data = [[32.99, 32.89, 32.98]];
     let dataResult = 33.08;
     let testDataTS = tf.tensor2d(data);
