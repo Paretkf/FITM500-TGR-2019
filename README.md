@@ -16,7 +16,7 @@
 ### 4. Server
 > sorce code for server with node.js
 - [Day1_Basic_Rest_API](./Server/Day1_Basic_Rest_API)
-- [Day2](./Server/Day2_MongoDB)
+- [Day2_MongoDB](./Server/Day2_MongoDB)
 ## Member :ok_woman:
 - :heart_eyes: Rachata Tongphakdee (fluk).
 - :sunglasses:Sillawat Leelas (flame).
