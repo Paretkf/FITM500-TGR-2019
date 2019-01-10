@@ -6,21 +6,21 @@ module.exports = class LstmModel {
   constructor (csvData, amountX = 3) {
     this.trainData = csvData
     // นั่นคือขนาดของก้าวที่เราจะทำการปรับในแต่ละครั้งก็สำคัญมีหลายวิธีที่ถูกเสนอมาสำหรับปรับแบบอัตโนมัติ
-    this.LEARNING_RATE = 0.013
+    this.LEARNING_RATE = 0.001
     // จำนวนของ x ที่ส่งมา
     this.amountX = amountX
     // จำนวน node ของการ train 10
     this.lstmUnits = 4
     // ค่า dropout 0.2
-    this.dropoutRate = 0
+    this.dropoutRate = 0.022
     // จำนวนก้าว 100
-    this.batchSize = 48,
+    this.batchSize = 90,
     // จำนวนรอบที่ train 1000
-    this.epochs = 1000,
+    this.epochs = 500,
     // ดึงมา train แบบสลับ = true
     this.shuffle = true,
     // spite 20 ดึงมา train 80 (0.2)
-    this.validationSplit = 0
+    this.validationSplit = 0.2
     // หา Max ของ Data 
     this.MAX = csvData.max
     console.log('\x1b[36m%s\x1b[0m', 'Initail LstmModel...')
@@ -59,7 +59,7 @@ module.exports = class LstmModel {
     }));
 
     // diff เพื่อหาความชัน
-    const optimizer = tf.train.sgd(LEARNING_RATE)
+    const optimizer = tf.train.adam(LEARNING_RATE)
 
     model.compile({
       optimizer: optimizer,
@@ -205,7 +205,7 @@ module.exports = class LstmModel {
     console.log(`result is : [${result[0] * this.MAX}, ${result[1] * this.MAX}, ${result[2] * this.MAX}]`);
     return {
       scalingResult: result,
-      result: result * this.MAX
+      result: [result[0] * this.MAX, result[1] * this.MAX, result[2] * this.MAX]
     }
   }
 }
