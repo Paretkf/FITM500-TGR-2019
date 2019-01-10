@@ -3,36 +3,50 @@ require('@tensorflow/tfjs-node')
 
 
 module.exports = class LstmModel {
-  constructor () {
-    console.log('\x1b[36m%s\x1b[0m', 'Initail LstmModel...');
-  }
-  // csvData = {
-  //   x: [[1, 2, 3], [2, 3, 4]],
-  //   y: [4, 5]
-  // }
-  // scaling data 0 - 1 use MAX for assign value
-  async trainDataScaling (csvData) {
-    let xs = [];
-    let ys = [];
-    let trainXS;
-    let trainYS;
-    let MAX = -999;
+  constructor (csvData, amountX = 3) {
+    this.trainData = csvData
     // นั่นคือขนาดของก้าวที่เราจะทำการปรับในแต่ละครั้งก็สำคัญมีหลายวิธีที่ถูกเสนอมาสำหรับปรับแบบอัตโนมัติ
-    const LEARNING_RATE = 0.0001;
-    const model = tf.sequential();
+    this.LEARNING_RATE = 0.0001
+    // จำนวนของ x ที่ส่งมา
+    this.amountX = amountX
+    // จำนวน node ของการ train
+    this.lstmUnits = 200
+    // ค่า dropout
+    this.dropoutRate = 0.2
+    // จำนวนก้าว 100
+    this.batchSize = 100,
+    // จำนวนรอบที่ train 1000
+    this.epochs = 30,
+    // ดึงมา train แบบสลับ = true
+    this.shuffle = true,
+    // spite 20 ดึงมา train 80 (0.2)
+    this.validationSplit = 0.2
+    // หา Max ของ Data 
+    this.MAX = this.getMax()
+    console.log('\x1b[36m%s\x1b[0m', 'Initail LstmModel...')
+  }
+
+  async trainDataScaling () {
+    let xs = []
+    let ys = []
+    let trainXS
+    let trainYS
+    // นั่นคือขนาดของก้าวที่เราจะทำการปรับในแต่ละครั้งก็สำคัญมีหลายวิธีที่ถูกเสนอมาสำหรับปรับแบบอัตโนมัติ
+    const LEARNING_RATE = this.LEARNING_RATE
+    const model = tf.sequential()
 
     // เพิ่ม layer lstm
     model.add(tf.layers.lstm({
       // จำนวน node ของการ train
-      units: 100,
+      units: this.lstmUnits,
       // มิติของข้อมูลวันรอบตัวเองกี่ครั้ง วน 3 [10,20,30] = [3,1] ; [[10,20,30], [10,20,30]] = [3,2]
-      inputShape: [3, 1],
+      inputShape: [this.amountX, 1],
       returnSequences: false
     }));
 
     // เพิ่ม layer dropout
     model.add(tf.layers.dropout ({
-      rate: 0.2
+      rate: this.dropoutRate
     }));
 
     // เพิ่ม layer dense
@@ -55,69 +69,65 @@ module.exports = class LstmModel {
     });
 
     //  ข้อมูลที่ใช้ในการ train
-    xs = await csvData.x;
+    xs = await this.trainData.x;
 
-    MAX = this.getMax(csvData.y)
-    csvData.y = csvData.y.map((number) => {
-      return number/MAX;
+    this.trainData.y = this.trainData.y.map((number) => {
+      return number/this.MAX;
     })
 
     // ข้อมูลที่ควรจะเป็น 
-    ys = await csvData.y;
+    ys = await this.trainData.y;
 
     trainXS = await tf.tensor2d(xs);
-    trainXS = await tf.reshape(trainXS, [-1, 3, 1])
+    trainXS = await tf.reshape(trainXS, [-1, this.amountX, 1])
 
     trainYS = await tf.tensor(ys)
     trainYS = await tf.reshape(trainYS, [-1, 1])
 
     const history = await model.fit( trainXS, trainYS, {
       // จำนวนก้าว 100
-      batchSize: 10,
+      batchSize: this.batchSize,
       // จำนวนรอบที่ train 1000
-      epochs: 30,
+      epochs: this.epochs,
       // ดึงมา train แบบสลับ = true
-      shuffle: true,
+      shuffle: this.shuffle,
       // spite 20 ดึงมา train 80 (0.2)
-      validationSplit: 0.2
+      validationSplit: this.validationSplit
     })
     await model.save('file://model')
   }
   // data = [1, 2, 3, 4]
-  getMax (data) {
+  getMax () {
     let max = -999
-    for (let i = 0; i < data.length; i++) {
-      if (max <= data[i]) {
-        max = data[i];
+    for (let i = 0; i < this.trainData.y.length; i++) {
+      if (max <= this.trainData.y[i]) {
+        max = this.trainData.y[i];
       }
     }
     return max
   }
-// csvData = {
-//   x: [[1, 2, 3], [2, 3, 4]],
-//   y: [4, 5]
-// }
-  async trainData (csvData) {
+
+  async trainData () {
     let xs = [];
     let ys = [];
     let trainXS;
     let trainYS;
     // นั่นคือขนาดของก้าวที่เราจะทำการปรับในแต่ละครั้งก็สำคัญมีหลายวิธีที่ถูกเสนอมาสำหรับปรับแบบอัตโนมัติ
-    const LEARNING_RATE = 0.0001;
+    const LEARNING_RATE = this.LEARNING_RATE;
     const model = tf.sequential();
 
     // เพิ่ม layer lstm
     model.add(tf.layers.lstm({
       // จำนวน node ของการ train
-      units: 100,
+      units: this.lstmUnits,
       // มิติของข้อมูลวันรอบตัวเองกี่ครั้ง วน 3 [10,20,30] = [3,1] ; [[10,20,30], [10,20,30]] = [3,2]
-      inputShape: [3, 1],
+      inputShape: [this.amountX, 1],
       returnSequences: false
     }));
 
     // เพิ่ม layer dropout
     model.add(tf.layers.dropout ({
-      rate: 0.2
+      rate: this.dropoutRate
     }));
 
     // เพิ่ม layer dense
@@ -140,26 +150,26 @@ module.exports = class LstmModel {
     });
 
     //  ข้อมูลที่ใช้ในการ train
-    xs = await csvData.x;
+    xs = await this.trainData.x;
 
     // ข้อมูลที่ควรจะเป็น 
-    ys = await csvData.y;
+    ys = await this.trainData.y;
 
     trainXS = await tf.tensor2d(xs);
-    trainXS = await tf.reshape(trainXS, [-1, 3, 1])
+    trainXS = await tf.reshape(trainXS, [-1, this.amountX, 1])
 
     trainYS = await tf.tensor(ys)
     trainYS = await tf.reshape(trainYS, [-1, 1])
 
     const history = await model.fit( trainXS, trainYS, {
       // จำนวนก้าว 100
-      batchSize: 10,
+      batchSize: this.batchSize,
       // จำนวนรอบที่ train 1000
-      epochs: 30,
+      epochs: this.epochs,
       // ดึงมา train แบบสลับ = true
-      shuffle: true,
+      shuffle: this.shuffle,
       // spite 20 ดึงมา train 80 (0.2)
-      validationSplit: 0.2
+      validationSplit: this.validationSplit
     })
     await model.save('file://model')
   }
@@ -172,7 +182,7 @@ module.exports = class LstmModel {
     }
     let model = await load()
     let testDataTS = tf.tensor2d(data)
-    testDataTS = tf.reshape(testDataTS, [-1, 3, 1])
+    testDataTS = tf.reshape(testDataTS, [-1, this.amountX, 1])
     const r = model.predict(testDataTS)
     let result = r.dataSync()[0]
     console.log(`Result is : ${result}`)
@@ -180,7 +190,7 @@ module.exports = class LstmModel {
   }
 
    // data = [[1, 2, 3], [2, 3, 4]]
-   async predictDataScaling (data, max) {
+   async predictDataScaling (data) {
     const load = () => {
       return new Promise((resolve, reject) => {
         resolve(tf.loadModel('file://model/model.json'))
@@ -188,14 +198,14 @@ module.exports = class LstmModel {
     }
     let model = await load()
     let testDataTS = tf.tensor2d(data)
-    testDataTS = tf.reshape(testDataTS, [-1, 3, 1])
+    testDataTS = tf.reshape(testDataTS, [-1, this.amountX, 1])
     const r = model.predict(testDataTS)
     let result = r.dataSync()[0]
     console.log(`Scale Down result is : ${result}`);
-    console.log('result is : ', result * max);
+    console.log('result is : ', result * this.MAX);
     return {
       scalingResult: result,
-      result: result * max
+      result: result * this.MAX
     }
   }
 }
