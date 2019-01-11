@@ -20,6 +20,9 @@ module.exports = function readCSV () {
       .on("end",() => {
         // data.splice(0, 1)
         // console.log('number of data: ', data)
+        dataFromDataBase = [10, 50, 64, 0, 0 , 2, 3, 1]
+        data = dataFromDataBase.concat(data)
+        data = data.splice(data.length - 8000, data.length)
         console.log('number of data: ',data.length)
         let xData = []
         let yData = []

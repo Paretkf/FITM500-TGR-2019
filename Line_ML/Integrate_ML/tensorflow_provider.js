@@ -14,9 +14,9 @@ module.exports = class LstmModel {
     // ค่า dropout 0.2
     this.dropoutRate = 0.022
     // จำนวนก้าว 100
-    this.batchSize = 90,
+    this.batchSize = 80,
     // จำนวนรอบที่ train 1000
-    this.epochs = 500,
+    this.epochs = 125,
     // ดึงมา train แบบสลับ = true
     this.shuffle = true,
     // spite 20 ดึงมา train 80 (0.2)
