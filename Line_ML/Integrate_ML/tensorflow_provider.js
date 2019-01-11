@@ -10,13 +10,13 @@ module.exports = class LstmModel {
     // จำนวนของ x ที่ส่งมา
     this.amountX = amountX
     // จำนวน node ของการ train 10
-    this.lstmUnits = 4
+    this.lstmUnits = 16
     // ค่า dropout 0.2
     this.dropoutRate = 0.022
     // จำนวนก้าว 100
     this.batchSize = 80,
     // จำนวนรอบที่ train 1000
-    this.epochs = 125,
+    this.epochs = 50,
     // ดึงมา train แบบสลับ = true
     this.shuffle = true,
     // spite 20 ดึงมา train 80 (0.2)

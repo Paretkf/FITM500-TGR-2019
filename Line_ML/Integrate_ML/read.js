@@ -1,5 +1,5 @@
 var csv = require('fast-csv')
-
+let axios = require('axios')
 module.exports = function readCSV () {
   let data = []
   return new Promise(function(resolve, reject) {
@@ -17,10 +17,13 @@ module.exports = function readCSV () {
         }
         // console.log(data)
       })
-      .on("end",() => {
+      .on("end",async () => {
         // data.splice(0, 1)
         // console.log('number of data: ', data)
-        dataFromDataBase = [10, 50, 64, 0, 0 , 2, 3, 1]
+        // number_of_
+        const res = await axios.get('http://202.139.192.83:8080/getSanam?hours=15')
+        dataFromDataBase = res.data.number_of_tourist
+        console.log(dataFromDataBase)
         data = dataFromDataBase.concat(data)
         data = data.splice(data.length - 8000, data.length)
         console.log('number of data: ',data.length)
